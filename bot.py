@@ -28,6 +28,10 @@ async def kick(ctx, member: discord.Member):
     await ctx.guild.kick(member)
     await ctx.send(f'{member} has been kicked')
 
+@bot.command()
+async def warn(ctx, member: discord.Member, *, reason: str):
+    await ctx.send(f'{member.mention} has been warned for {reason}')
+    
 @bot.command(name='Ban', help='Bans the mentioned user')
 async def ban(ctx, member: discord.Member):
     await ctx.guild.ban(member)
