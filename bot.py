@@ -28,6 +28,13 @@ async def kick(ctx, member: discord.Member):
     await ctx.guild.kick(member)
     await ctx.send(f'{member} has been kicked')
 
+
+@bot.command()
+async def slowmode(ctx, time: int):
+    channel = ctx.channel
+    await channel.edit(slowmode_delay=time)
+    await ctx.send(f'Slowmode for this channel has been set to {time} seconds.')    
+
 @bot.command()
 async def warn(ctx, member: discord.Member, *, reason: str):
     await ctx.send(f'{member.mention} has been warned for {reason}')
