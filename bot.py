@@ -1,14 +1,29 @@
 import discord
 import os
 from discord.ext import commands
+from profanity_check import predict
 
-bot = commands.Bot(command_prefix='>')
 
+class DiscordBot(commands.Bot):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+bot = DiscordBot(command_prefix='>')
+
+@bot.event
+async def on_message(message):
+    # check for profanity
+    if predict([message.content])[0]:
+        # delete the message
+        await message.delete()
+        # send a warning message to the user
+        await message.author.send("Please watch your language.")
+        
 @bot.event
 async def on_ready():
     print(f'{bot.user.name} has connected to Discord!')
 
-@bot.command(name='Kick', help='Kicks the mentioned user')
+@bot.command(name='kick', help='Kicks the mentioned user')
 async def kick(ctx, member: discord.Member):
     await ctx.guild.kick(member)
     await ctx.send(f'{member} has been kicked')
@@ -29,5 +44,4 @@ async def purge(ctx, amount: int):
     await ctx.channel.purge(limit=amount)
     await ctx.send(f'{amount} messages have been deleted')
 
-bot = discord.Bot()
 bot.run(os.environ['BOT_TOKEN'])
