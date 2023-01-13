@@ -2,7 +2,8 @@ import discord
 import os
 from discord.ext import commands
 from profanity_check import predict
-
+import joblib
+import sklearn.externals
 
 class DiscordBot(commands.Bot):
     def __init__(self, *args, **kwargs):
